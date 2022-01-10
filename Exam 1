@@ -1,61 +1,52 @@
-var CHANNEL_ACCESS_TOKEN = 'AsZCxi/9svAdcxfKYgEWXYLrBPx+i/5So8j2P81f2FJwzxJ5EamQVUp42/7GDtdzvisLrH2cTzto2pfCrMzIN54FpHOSwSy2DcH8l4iCPEH4A1EZtaPKZI5dEp8WxzgR0fe+S1fOyB+HlKCRFdKeZQdB04t89/1O/w1cDnyilFU=';
-var line_endpoint = 'https://api.line.me/v2/bot/message/reply';
-
-function doGet(request) {
-  return ContentService.createTextOutput(JSON.stringify({
-    post: "ok"
-  })).setMimeType(ContentService.MimeType.JSON);
+// ตัวอย่าง การใช้งาน ข้อความ sticker
+//----------------------------------------
+//         1. ข้อความ 
+//----------------------------------------
+if(message=="hello")
+{
+  result ={
+    "type": "text",
+    "text": "Hello, Cute Boy"
+  }
 }
-
-function doPost(e) {
-  var json = JSON.parse(e.postData.contents);
-  var reply_token = json.events[0].replyToken;
-  var message = json.events[0].message.text;
-  var result = {}
-//------------------
-if(message == '111')
+//-----------------------------------------
+if(message=="ทำอะไร")
+  result ={
+    "type": "text",
+    "text": "ไม่ได้ "+message+" Cute Boy"
+  }
+//-----------------------------------------
+if(message=="สบายดีไหม")
+  result ={
+    "type": "text",
+    "text": "แล้วนายล่ะ "+message+" ? Cute Girl"
+  }
+//-----------------------------------------
+if(message=="ชื่ออะไร")
+  result ={
+    "type": "text",
+    "text": "ฉันชื่อ cBot"
+  }
+//-----------------------------------------
+//      2. sticker
+//-----------------------------------------
+if(message=="ง่วงจัง")
 {
   result={
         type: "sticker",
-        packageId: 3,
-        stickerId: 240
-      }
-}else if(message == '222')
+        packageId: 1,
+        stickerId: 1
+  }
+}
+//-----------------------------------------
+if(message=="ok")
 {
   result={
         type: "sticker",
-        packageId: 11537,
-        stickerId: 52002744
-      }
-}else if(message == '333')
-{
-   result={
-        type: "image",
-        originalContentUrl: "https://sv1.picz.in.th/images/2021/12/27/6MulZt.png",
-        previewImageUrl: "https://sv1.picz.in.th/images/2021/12/27/6MulZt.png"
-      }
-}else if(message == '444')
-{
-   result={
-        type: "image",
-        originalContentUrl: "https://sv1.picz.in.th/images/2021/09/15/CjW7vn.png",
-        previewImageUrl: "https://sv1.picz.in.th/images/2021/09/15/CjW7vn.png"
-      }
+        packageId: 789,
+        stickerId: 10858
+  }
+      
 }
-//------------------
+//-----------------------------------------
 
-  UrlFetchApp.fetch(line_endpoint, {
-    'headers': {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer ' + CHANNEL_ACCESS_TOKEN,
-    },
-    'method': 'post',
-    'payload': JSON.stringify({
-      'replyToken': reply_token,
-      'messages': [result],
-    }),
-  });
-
-  var replyJSON = ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
-  return replyJSON;
-}
